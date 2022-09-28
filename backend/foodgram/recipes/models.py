@@ -1,22 +1,20 @@
-from django.contrib.auth import get_user_model
 from django.db import models
+from colorfield.fields import ColorField
 
-User = get_user_model()
+from users.models import User
 
 
 class Tag(models.Model):
     name = models.CharField(
         max_length=200,
-        verbose_name='Название'
-    )
-    color = models.CharField(
-        max_length=7,
-        verbose_name='Цвет в HEX'
-    )
-    slug = models.SlugField(
         unique=True,
-        verbose_name='Адрес страницы тэга',
-        max_length=200
+        null=False
+    )
+    color = ColorField()
+    slug = models.SlugField(
+        max_length=200,
+        unique=True,
+        blank=False
     )
 
     def __str__(self):
@@ -24,55 +22,42 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField()
-    measurement_unit = models.CharField()
+    name = models.CharField(
+        max_length=200,
+        null=False
+    )
+    measurement_unit = models.CharField(
+        max_length=200,
+        null=False
+    )
 
     def __str__(self):
         return self.name
 
 
-class IngredientQuantity(models.Model):
-    ingredient = models.ForeignKey(
-        Ingredient,
-        on_delete=models.CASCADE
-    )
-    quantity = models.PositiveSmallIntegerField(
-        null=False
-    )
-
-
-class ShopingCart(models.Model):
-    user = models.ForeignKey(
-        User
-    )
-    recipes = models.
-
-
-class
-
-
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
-        null=False
+        on_delete=models.CASCADE,
+        blank=False
     )
     name = models.CharField(
         max_length=200,
         null=False
     )
-    tags = models.models.ManyToManyField(
+    tags = models.ManyToManyField(
         Tag,
-
+        through='RecipeTag',
+        related_name='recipes'
     )
-    ingredients = models.ForeignKey(
-        Ingredient
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        through='IngredientQuantity'
     )
-    text = models.TextField(
-
-    )
+    text = models.TextField(null=False)
     image = models.ImageField(
         upload_to='recipes/images/',
-        null=True,
+        blank=True,
         default=None
     )
     cooking_time = models.PositiveSmallIntegerField()
@@ -81,4 +66,67 @@ class Recipe(models.Model):
         return self.name
 
 
+class IngredientQuantity(models.Model):
+    ingredient = models.ForeignKey(
+        Ingredient,
+        on_delete=models.CASCADE,
+        blank=False
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        blank=False
+    )
+    amount = models.PositiveSmallIntegerField()
 
+
+class RecipeTag(models.Model):
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        blank=False
+    )
+    tag = models.ForeignKey(
+        Tag,
+        on_delete=models.CASCADE,
+        blank=False
+    )
+
+
+class ShopingCart(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='basket'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='basket',
+    )
+
+
+class Favorites(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favorites'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='favorites',
+    )
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower'
+    )
+    following = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='following'
+    )

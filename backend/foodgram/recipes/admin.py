@@ -10,13 +10,27 @@ class IngredientAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
 
+class RecipeTagInLine(admin.TabularInline):
+    model = RecipeTag
+    extra = 1
+
+
+class IngredientQuantityInLine(admin.TabularInline):
+    model = IngredientQuantity
+    extra = 1
+
+
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('name', 'author')
     list_filter = ('author', 'name', 'tags')
-    filter_vertical = ('tags',)
-    # fields = ('ingredients', 'tags')
-    # list_select_related = ('ingredients', 'tags')
+    inlines = (RecipeTagInLine, IngredientQuantityInLine)
+    fields = ('name', 'author', 'text', 'cooking_time', 'image',
+              'favorites_count')
+    readonly_fields = ('favorites_count',)
+
+    def favorites_count(self, obj):
+        return Favorites.objects.filter(recipe=obj).count()
 
 
 @admin.register(Tag)

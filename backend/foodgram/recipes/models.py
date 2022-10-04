@@ -5,17 +5,11 @@ from users.models import User
 
 
 class Tag(models.Model):
-    name = models.CharField(
-        max_length=200,
-        unique=True,
-        null=False
-    )
+    name = models.CharField(max_length=200, unique=True,
+                            null=False)
     color = ColorField()
-    slug = models.SlugField(
-        max_length=200,
-        unique=True,
-        blank=False
-    )
+    slug = models.SlugField(max_length=200, unique=True,
+                            blank=False)
 
     def __str__(self):
         return self.name
@@ -32,7 +26,7 @@ class Ingredient(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f'{self.name} {self.measurement_unit}'
 
 
 class Recipe(models.Model):

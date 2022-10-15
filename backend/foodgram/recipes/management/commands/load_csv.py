@@ -5,7 +5,7 @@ from django.core.management import BaseCommand
 from recipes.models import Ingredient
 
 
-FILE_PATH = 'F:/Programming/Code/foodgram-project-react/data/ingredients.csv'
+FILE_PATH = 'D:/code/projects/foodgram-project-react/data/ingredients.csv'
 
 
 class Command(BaseCommand):

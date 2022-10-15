@@ -30,15 +30,8 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        blank=False
-    )
-    name = models.CharField(
-        max_length=200,
-        null=False
-    )
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
+    name = models.CharField(max_length=200, null=False)
     tags = models.ManyToManyField(
         Tag,
         through='RecipeTag',

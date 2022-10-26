@@ -7,7 +7,7 @@ from users.models import User
 class Tag(models.Model):
     name = models.CharField(max_length=200, unique=True,
                             null=False)
-    color = ColorField()
+    color = ColorField(unique=True, blank=False)
     slug = models.SlugField(max_length=200, unique=True,
                             blank=False)
 
@@ -30,7 +30,7 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, related_name='recipes')
     name = models.CharField(max_length=200, null=False)
     tags = models.ManyToManyField(
         Tag,
@@ -106,14 +106,14 @@ class Favorites(models.Model):
     )
 
 
-class Follow(models.Model):
-    user = models.ForeignKey(
+class Subscribe(models.Model):
+    author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='follower'
+        related_name='author'
     )
-    following = models.ForeignKey(
+    subscriber = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='following'
+        related_name='subscriber'
     )

@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
 from recipes.models import (Recipe, Tag, Ingredient, ShopingCart, Favorites,
-                            Follow, IngredientQuantity)
+                            Subscribe, IngredientQuantity)
 from users.models import User
+from users.serializers import CustomUserSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -35,12 +36,19 @@ class RecipesIngredientSerializer(serializers.ModelSerializer):
         return value.amount
 
 
-class RecipeSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer(read_only=True)
+class RecipeReadSerializer(serializers.ModelSerializer):
+    author = CustomUserSerializer(read_only=True)
     ingredients = RecipesIngredientSerializer(read_only=True, many=True)
     tags = TagSerializer(read_only=True, many=True)
 
     class Meta:
         fields = ('id', 'tags', 'author', 'ingredients', 'name', 'image',
                   'text', 'cooking_time')
+        model = Recipe
+
+
+class RecipeWriteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = ('ingredients', 'tags', 'image', 'name', 'cooking_time', 'author')
         model = Recipe

@@ -18,27 +18,27 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
 
 
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = ('email', 'id', 'username', 'first_name', 'last_name')
-        model = User
-
-
-class RecipesIngredientSerializer(serializers.ModelSerializer):
-    amount = serializers.SerializerMethodField(read_only=True)
+class IngredientAmountSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='ingredient.id')
+    name = serializers.ReadOnlyField(source='ingredients.name')
+    measurement_unit = serializers.ReadOnlyField(
+        source='ingredients.measurement_unit'
+        )
 
     class Meta:
-        fields = ('id', 'name', 'measurement_unit', 'amount')
-        model = Ingredient
+        model = IngredientQuantity
+        fields = ('id', 'name', 'measurement_unit')
 
-    def get_amount(self, obj):
-        value = IngredientQuantity.objects.get(ingredient=obj.id)
-        return value.amount
+
+    # def get_amount(self, obj):
+    #     print(obj)
+    #     value = IngredientQuantity.objects.get(ingredient=obj.id)
+    #     return value.amount
 
 
 class RecipeReadSerializer(serializers.ModelSerializer):
     author = CustomUserSerializer(read_only=True)
-    ingredients = RecipesIngredientSerializer(read_only=True, many=True)
+    ingredients = IngredientAmountSerializer(read_only=True, many=True)
     tags = TagSerializer(read_only=True, many=True)
 
     class Meta:

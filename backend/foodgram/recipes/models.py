@@ -40,13 +40,12 @@ class Recipe(models.Model):
     )
     ingredients = models.ManyToManyField(
         Ingredient,
-        through='IngredientQuantity',
-        related_name='recipes'
+        through='IngredientQuantity'
     )
     text = models.TextField(null=False)
     image = models.ImageField(
         upload_to='recipes/images/',
-        blank=True,
+        null=True,
         default=None
     )
     cooking_time = models.PositiveSmallIntegerField()

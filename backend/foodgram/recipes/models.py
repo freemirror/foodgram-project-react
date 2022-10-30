@@ -1,6 +1,5 @@
-from django.db import models
 from colorfield.fields import ColorField
-
+from django.db import models
 from users.models import User
 
 
@@ -32,7 +31,7 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, blank=False,
                                related_name='recipes')
-    name = models.CharField(max_length=200, null=False)
+    name = models.CharField(max_length=200, null=False, unique=True)
     tags = models.ManyToManyField(
         Tag,
         through='RecipeTag',
@@ -45,7 +44,7 @@ class Recipe(models.Model):
     text = models.TextField(null=False)
     image = models.ImageField(
         upload_to='recipes/images/',
-        null=True,
+        blank=True,
         default=None
     )
     cooking_time = models.PositiveSmallIntegerField()
@@ -66,7 +65,7 @@ class IngredientQuantity(models.Model):
         on_delete=models.CASCADE,
         blank=False
     )
-    amount = models.PositiveSmallIntegerField()
+    amount = models.PositiveSmallIntegerField(null=False)
 
 
 class RecipeTag(models.Model):
@@ -82,7 +81,7 @@ class RecipeTag(models.Model):
     )
 
 
-class ShopingCart(models.Model):
+class ShoppingCart(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -95,7 +94,7 @@ class ShopingCart(models.Model):
     )
 
 
-class Favorites(models.Model):
+class Favorite(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

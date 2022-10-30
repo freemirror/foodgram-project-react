@@ -1,9 +1,7 @@
 from csv import DictReader
 
 from django.core.management import BaseCommand
-
 from recipes.models import Ingredient
-
 
 FILE_PATH = 'D:/code/projects/foodgram-project-react/data/ingredients.csv'
 

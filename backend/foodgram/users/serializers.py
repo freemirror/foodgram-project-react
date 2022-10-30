@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer
+from recipes.models import Recipe, Subscribe
 from rest_framework import serializers
 
 from .models import User
-from recipes.models import Recipe, Subscribe
 
 
 class CustomUserSerializer(UserCreateSerializer):
@@ -51,7 +51,5 @@ class SubscribeReadSerializer(serializers.ModelSerializer):
         ).exists()
 
     def get_recipes(self, obj):
-        # request = self.context.get('request')
         queryset = Recipe.objects.filter(author=obj.author)
-                                                                        #Добавить ограничение на выдачу
         return AuthorRecipeSerializator(queryset, many=True).data

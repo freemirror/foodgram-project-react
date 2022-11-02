@@ -16,12 +16,10 @@ class CustomUserSerializer(UserCreateSerializer):
 
     def get_is_subscribe(self, obj):
         request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
-        author = get_object_or_404(User, username=obj.username)
-        subscriber = get_object_or_404(User, username=request.user.username)
-        return Subscribe.objects.filter(author=author.id,
-                                        subscriber=subscriber.id).exists()
+        return Subscribe.objects.filter(
+            author=obj.id,
+            subscriber=request.user.id
+        ).exists() and (request and not request.user.is_anonymous)
 
 
 class AuthorRecipeSerializator(serializers.ModelSerializer):

@@ -60,23 +60,18 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
         model = Recipe
 
-    def get_is_favorited(self, obj):
+    def in_entity(self, obj, model):
         request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
-        user = get_object_or_404(User, username=request.user.username)
-        recipe = get_object_or_404(Recipe, id=obj.id)
-        return Favorite.objects.filter(user=user.id,
-                                       recipe=recipe.id).exists()
+        return model.objects.filter(
+            user=request.user.id,
+            recipe=obj.id
+        ).exists() and (request and not request.user.is_anonymous)
+
+    def get_is_favorited(self, obj):
+        return self.in_entity(obj, Favorite)
 
     def get_is_in_shopping_cart(self, obj):
-        request = self.context.get('request')
-        if not request or request.user.is_anonymous:
-            return False
-        user = get_object_or_404(User, username=request.user.username)
-        recipe = get_object_or_404(Recipe, id=obj.id)
-        return ShoppingCart.objects.filter(user=user.id,
-                                           recipe=recipe.id).exists()
+        return self.in_entity(obj, ShoppingCart)
 
     def create_ingredient_quantity(self, valid_ingredients, recipe):
         for ingredient_with_amount in valid_ingredients:

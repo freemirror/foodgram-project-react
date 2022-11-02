@@ -40,9 +40,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    def add(self, model, user, pk):
+    def __get_data(self, model, user, pk):
         recipe = get_object_or_404(Recipe, pk=pk)
         relation = model.objects.filter(user=user, recipe=recipe)
+        return relation, recipe
+
+    def add(self, model, user, pk):
+        relation, recipe = self.__get_data(model, user, pk)
         if relation.exists():
             return Response(
                 {'errors': 'Рецепт уже добавлен!'},
@@ -52,8 +56,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=HTTPStatus.CREATED)
 
     def delete_relation(self, model, user, pk):
-        recipe = get_object_or_404(Recipe, pk=pk)
-        relation = model.objects.filter(user=user, recipe=recipe)
+        relation, recipe = self.__get_data(model, user, pk)
         if not relation.exists():
             return Response(
                 {'errors': 'Рецепт уже удалён!'},
@@ -61,23 +64,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
         relation.delete()
         return Response(status=HTTPStatus.NO_CONTENT)
 
-    @action(methods=['post', 'delete'], detail=True)
-    def favorite(self, request, pk=None):
+    def __change_data(self, model, request, pk):
         user = request.user
         if request.method == 'POST':
-            return self.add(Favorite, user, pk)
+            return self.add(model, user, pk)
         if request.method == 'DELETE':
-            return self.delete_relation(Favorite, user, pk)
+            return self.delete_relation(model, user, pk)
         return Response(status=HTTPStatus.METHOD_NOT_ALLOWED)
 
     @action(methods=['post', 'delete'], detail=True)
+    def favorite(self, request, pk=None):
+        return self.__change_data(Favorite, request, pk)
+
+    @action(methods=['post', 'delete'], detail=True)
     def shopping_cart(self, request, pk=None):
-        user = request.user
-        if request.method == 'POST':
-            return self.add(ShoppingCart, user, pk)
-        if request.method == 'DELETE':
-            return self.delete_relation(ShoppingCart, user, pk)
-        return Response(status=HTTPStatus.METHOD_NOT_ALLOWED)
+        return self.__change_data(ShoppingCart, request, pk)
 
     @action(methods=['get'], detail=False)
     def download_shopping_cart(self, request):

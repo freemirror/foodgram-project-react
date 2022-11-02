@@ -62,7 +62,7 @@ docker-compose start
 - Автоматический деплой проекта на боевой сервер
 - Отправка уведомления в Telegram о том, что процесс деплоя успешно завершился
 
-Примеры запросов к API:
+### Примеры запросов к API:
 ```
 POST http://localhost/api/users/
 Authorization: token b8d4f4872a9ab02d1cb52f68d25e2f660840bd11

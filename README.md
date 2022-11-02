@@ -76,9 +76,12 @@ Content-Type: application/json
 "password": "Qwerty123"
 }
 ```
+```
 GET http://localhost/api/recipes/download_shopping_cart/
 ```
+```
 DELETE http://localhost/api/recipes/3/favorite/
+```
 ```
 GET http://localhost/api/ingredients/{id}/
 ```

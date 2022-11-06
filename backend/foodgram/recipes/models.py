@@ -15,14 +15,8 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(
-        max_length=200,
-        null=False
-    )
-    measurement_unit = models.CharField(
-        max_length=200,
-        null=False
-    )
+    name = models.CharField(max_length=200)
+    measurement_unit = models.CharField(max_length=200, null=False)
 
     def __str__(self):
         return f'{self.name} {self.measurement_unit}'
@@ -48,6 +42,10 @@ class Recipe(models.Model):
         default=None
     )
     cooking_time = models.PositiveSmallIntegerField()
+    pub_date = models.DateTimeField(
+        blank=True,
+        auto_now_add=True
+    )
 
     def __str__(self):
         return self.name

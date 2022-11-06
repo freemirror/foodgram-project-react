@@ -31,7 +31,7 @@ DB_HOST=db
 DB_PORT=5432
 ```
 
-4)Далее запускаем docker-compose командой:
+4) Далее запускаем docker-compose командой:
 ```
 docker-compose up -d
 ```

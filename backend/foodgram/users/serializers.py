@@ -7,14 +7,14 @@ from .models import User
 
 
 class CustomUserSerializer(UserCreateSerializer):
-    is_subscribe = serializers.SerializerMethodField()
+    is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = ('email', 'id', 'username', 'first_name', 'last_name',
-                  'password', 'is_subscribe')
+                  'password', 'is_subscribed')
 
-    def get_is_subscribe(self, obj):
+    def get_is_subscribed(self, obj):
         request = self.context.get('request')
         return Subscribe.objects.filter(
             author=obj.id,

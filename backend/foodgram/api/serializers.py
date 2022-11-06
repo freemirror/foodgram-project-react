@@ -60,7 +60,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
         model = Recipe
 
-    def in_entity(self, obj, model):
+    def __in_entity(self, obj, model):
         request = self.context.get('request')
         return model.objects.filter(
             user=request.user.id,
@@ -68,10 +68,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         ).exists() and (request and not request.user.is_anonymous)
 
     def get_is_favorited(self, obj):
-        return self.in_entity(obj, Favorite)
+        return self.__in_entity(obj, Favorite)
 
     def get_is_in_shopping_cart(self, obj):
-        return self.in_entity(obj, ShoppingCart)
+        return self.__in_entity(obj, ShoppingCart)
 
     def create_ingredient_quantity(self, valid_ingredients, recipe):
         for ingredient_with_amount in valid_ingredients:

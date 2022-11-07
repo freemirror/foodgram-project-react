@@ -86,3 +86,4 @@ DELETE http://localhost/api/recipes/3/favorite/
 GET http://localhost/api/ingredients/123/
 ```
 
+

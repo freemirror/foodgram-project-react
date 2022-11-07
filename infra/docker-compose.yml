@@ -9,7 +9,7 @@ services:
       - ./.env
 
   web:
-    build: ../backend/
+    image: freemirror/foodgram_web:v1.00
     restart: always
 
     volumes:

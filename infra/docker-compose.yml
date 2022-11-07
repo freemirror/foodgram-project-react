@@ -20,6 +20,10 @@ services:
     env_file:
       - ./.env 
 
+  frontend:
+    image: freemirror/foodgram_front:v1.00
+    volumes:
+      - ../frontend/:/app/result_build/
 
   nginx:
     image: nginx:1.19.3

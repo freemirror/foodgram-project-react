@@ -59,7 +59,11 @@ jobs:
             script: |
               sudo docker-compose stop
               sudo docker-compose rm web
+              sudo docker-compose rm -f frontend
+              sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/foodgram_web
+              sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/foodgram_front
               sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_web:v1.00
+              sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_front:v1.00
               touch .env
               echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
               echo DB_NAME=${{ secrets.DB_NAME }} >> .env

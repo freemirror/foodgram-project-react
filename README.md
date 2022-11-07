@@ -45,7 +45,7 @@ docker-compose exec web python manage.py load_csv
 ```
 
 Проект доступен по адресу: 
-http://localhost/
+http://84.252.143.131/
 
 Остановка контейнеров:
 

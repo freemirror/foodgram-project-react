@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer
 from recipes.models import Recipe, Subscribe
 from rest_framework import serializers

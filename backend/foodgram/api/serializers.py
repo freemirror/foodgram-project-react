@@ -6,7 +6,7 @@ from recipes.models import (Favorite, Ingredient, IngredientQuantity, Recipe,
                             RecipeTag, ShoppingCart, Tag)
 from recipes.validators import validate_ingredients, validate_tags
 from rest_framework import serializers
-from users.models import User
+
 from users.serializers import CustomUserSerializer
 
 
@@ -36,7 +36,7 @@ class IngredientQuantitySerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
         source='ingredient.measurement_unit'
-        )
+    )
 
     class Meta:
         model = IngredientQuantity

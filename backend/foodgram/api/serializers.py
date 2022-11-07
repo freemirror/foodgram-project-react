@@ -6,7 +6,6 @@ from recipes.models import (Favorite, Ingredient, IngredientQuantity, Recipe,
                             RecipeTag, ShoppingCart, Tag)
 from recipes.validators import validate_ingredients, validate_tags
 from rest_framework import serializers
-
 from users.serializers import CustomUserSerializer
 
 

@@ -11,7 +11,6 @@ services:
   web:
     image: freemirror/foodgram_web:v1.00
     restart: always
-
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/

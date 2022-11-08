@@ -47,6 +47,9 @@ docker-compose exec web python manage.py load_csv
 Проект доступен по адресу: 
 http://84.252.143.131/
 
+Логин/пароль администратора (для проверки):
+freem@ya.ru/AjlAx1990 (для админики freem, пароль тот же)
+
 Остановка контейнеров:
 
 docker-compose stop
@@ -61,11 +64,10 @@ docker-compose start
 - Проверка кода на соответствие стандартам PEP8
 - Сборка и доставка докер-образа для контейнера web на Docker Hub
 - Автоматический деплой проекта на боевой сервер
-- Отправка уведомления в Telegram о том, что процесс деплоя успешно завершился
 
 ### Примеры запросов к API:
 ```
-POST http://localhost/api/users/
+POST http://84.252.143.131/api/users/
 Authorization: token b8d4f4872a9ab02d1cb52f68d25e2f660840bd11
 Content-Type: application/json
 {
@@ -77,13 +79,11 @@ Content-Type: application/json
 }
 ```
 ```
-GET http://localhost/api/recipes/download_shopping_cart/
+GET http://84.252.143.131/api/recipes/download_shopping_cart/
 ```
 ```
-DELETE http://localhost/api/recipes/3/favorite/
+DELETE http://84.252.143.131/api/recipes/3/favorite/
 ```
 ```
-GET http://localhost/api/ingredients/123/
+GET http://84.252.143.131/api/ingredients/123/
 ```
-
-
